@@ -15,7 +15,7 @@ import {
 // import {color} from 'react-native-reanimated';
 
 import {dummyData, COLORS, FONTS, icons, images, SIZES} from '../../constants';
-// import {TextButton} from '../layout';
+import {TextButton} from '../layout';
 
 const CITIES_ITEM_SIZES = SIZES.width / 3;
 const DISTRICT_ITEM_SIZE =
@@ -36,6 +36,7 @@ const HomeScreen = ({navigation}) => {
     ...dummyData.countries[0].places,
     {id: -2},
   ]);
+  const [placeScrollPosition, setPlaceScrollPosition] = useState(0);
 
   function renderHeader() {
     return (
@@ -89,6 +90,16 @@ const HomeScreen = ({navigation}) => {
           ],
           {useNativeDriver: false},
         )}
+        onMomentumScrollEnd={event => {
+          var position = (
+            event.nativeEvent.contentOffset.x / CITIES_ITEM_SIZES
+          ).toFixed(0);
+          setDistrict([
+            {id: -1},
+            ...dummyData.countries[position].places,
+            {id: -2},
+          ]);
+        }}
         renderItem={({item, index}) => {
           const opacity = citiesScrollX.interpolate({
             inputRange: [
@@ -132,7 +143,7 @@ const HomeScreen = ({navigation}) => {
                 opacity={opacity}
                 // eslint-disable-next-line react-native/no-inline-styles
                 style={{
-                  height: 130,
+                  height: 170,
                   width: CITIES_ITEM_SIZES,
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -151,7 +162,7 @@ const HomeScreen = ({navigation}) => {
                   style={{
                     marginTop: 3,
                     color: COLORS.white,
-                    ...FONTS.h2,
+                    ...FONTS.h1,
                     fontSize: fontSize,
                   }}>
                   {item.name}
@@ -162,6 +173,11 @@ const HomeScreen = ({navigation}) => {
         }}
       />
     );
+  }
+  function exploreButtonHandler() {
+    const currentIndex = parseInt(placeScrollPosition, 10) + 1;
+    console.log(district[currentIndex]);
+    navigation.navigate('Place', {selectedPlace: district[currentIndex]});
   }
   function renderDistrict() {
     return (
@@ -194,8 +210,14 @@ const HomeScreen = ({navigation}) => {
           ],
           {useNativeDriver: false},
         )}
+        onMomentumScrollEnd={event => {
+          var position = (
+            event.nativeEvent.contentOffset.x / DISTRICT_ITEM_SIZE
+          ).toFixed(0);
+          setPlaceScrollPosition(position);
+        }}
         renderItem={({item, index}) => {
-          const opacity = citiesScrollX.interpolate({
+          const opacity = districtScrollX.interpolate({
             inputRange: [
               (index - 2) * DISTRICT_ITEM_SIZE,
               (index - 1) * DISTRICT_ITEM_SIZE,
@@ -212,7 +234,7 @@ const HomeScreen = ({navigation}) => {
               activeHeight = SIZES.height / 1.65;
             }
           } else {
-            activeHeight = SIZES.height / 1.6;
+            activeHeight = SIZES.height / 2;
           }
           const height = districtScrollX.interpolate({
             inputRange: [
@@ -228,7 +250,7 @@ const HomeScreen = ({navigation}) => {
             extrapolate: 'clamp',
           });
 
-          if (index === 0 || index === district.length - 1) {
+          if (index == 0 || index == district.length - 1) {
             return (
               <View
                 style={{
@@ -281,19 +303,18 @@ const HomeScreen = ({navigation}) => {
                       textAlign: 'center',
                       color: COLORS.white,
                       ...FONTS.body5,
-                      // color: COLORS.white,
-                      ...FONTS.h1,
                     }}>
                     {item.description}
                   </Text>
-                  {/* <TextButton
+                  <TextButton
                     label="Khám phá"
                     customContainerStyle={{
                       position: 'absolute',
-                      bottom: -20,
+                      bottom: -10,
                       width: 150,
                     }}
-                  /> */}
+                    onPress={() => exploreButtonHandler()}
+                  />
                 </View>
               </Animated.View>
             );

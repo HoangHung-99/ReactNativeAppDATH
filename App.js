@@ -5,6 +5,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 
 import Tabs from './navigation/Tabs';
+import PlaceScreen from './components/screen/PlaceScreen';
+// import {Place} from './components/screen/index';
 // import {NavigationContainer} from '@react-navigation/native';
 // import {createStackNavigator} from '@react-navigation/stack';
 // import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -40,7 +42,7 @@ const App = () => {
         }}
         initialRouteName={'Home'}>
         <Stack.Screen name="Home" component={Tabs} />
-        {/* <Stack.Screen name="User" component={User} /> */}
+        <Stack.Screen name="Place" component={PlaceScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

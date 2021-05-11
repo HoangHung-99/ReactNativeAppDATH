@@ -6,12 +6,13 @@ import {
 } from '@react-navigation/bottom-tabs';
 import {COLORS, FONTS, icons} from '../constants';
 
+import {Home, History, User, Liked, Message, Place} from '../components/screen';
 // import from components
-import Home from '../components/screen/HomeScreen';
-import History from '../components/screen/HistoryScreen';
-// import Liked from './components/screen/LikedScreen';
-// import Message from './components/screen/MessageScreen';
-import User from '../components/screen/UserScreen';
+// import Home from '../components/screen/HomeScreen';
+// import History from '../components/screen/HistoryScreen';
+// // import Liked from './components/screen/LikedScreen';
+// // import Message from './components/screen/MessageScreen';
+// import User from '../components/screen/UserScreen';
 const Tab = createBottomTabNavigator();
 
 const Tabs = () => {
@@ -46,7 +47,7 @@ const Tabs = () => {
       />
       <Tab.Screen
         name="LikedScreen"
-        component={Home}
+        component={Liked}
         options={{
           tabBarIcon: ({focused}) => (
             <View
@@ -92,7 +93,7 @@ const Tabs = () => {
       />
       <Tab.Screen
         name="MessageScreen"
-        component={Home}
+        component={Message}
         options={{
           tabBarIcon: ({focused}) => (
             <View
